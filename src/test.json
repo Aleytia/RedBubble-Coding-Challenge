@@ -1,0 +1,13 @@
+[
+  {
+    "_comment": "This file exists only for testing purposes",
+    "product-type": "hoodie",
+    "options": {
+      "size": "xl",
+      "colour": "dark",
+      "print-location": "back"
+    },
+    "artist-markup": 30,
+    "quantity": 2
+  }
+]
