@@ -63,5 +63,35 @@ def has_internet(url):
 
 We define has_internet as a helper function that checks if a connection can be made, and if so, returns a urlopen object from that link, which will then be decoded in validate_HTTP_JSON. Otherwise, the methods are generally the same. Notice that from a URL, you should use `json.loads()` , which is different than `json.load()`.  
 
+---
+
+A variant of the has_internet(url) method. This adds an HTTP scheme if it is missing, and only throws a ValueError on any error. That's it!
+
+```python
+def has_internet(url):
+	"""
+	Verifies that the system this script is running on can access the provided
+	URL. If it fails, then we raise an error.
+
+	Args:
+		url: The URL to check if a connection can be established with.
+		jsontype: Either cart.json or base-prices.json
+
+	Returns: A urlopen() object, to be read in validate_HTTP_JSON()
+
+	Raises:
+		ValueError: If provided URL is invalid. This may also be a bad file.
+	"""
+
+	# Add scheme to url if it is missing one
+	if not urlparse(url).scheme:
+		url = "http://" + url
+
+	try:
+		return urlopen(url, timeout=5)
+	except:
+		raise ValueError("An invalid json file or URL was provided")
+```
+
 
 

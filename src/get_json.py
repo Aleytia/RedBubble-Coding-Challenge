@@ -11,21 +11,28 @@ This file uses Google's Python style guide:
 https://google.github.io/styleguide/pyguide.html
 """
 
-# TODO: REWRITE URL TO BE IN HTTPS FORM
-
 import json
 import os
-import sys
 
 from urllib.request import urlopen
 from urllib.parse import urlparse
+from urllib.error import URLError, HTTPError
+
+
+HTTP_ERR_STRING =   ('An invalid file or URL was provided for the %s. \n'
+					'Alternatively, your computer may not be '
+					'connected to the internet.\n')
+VAL_ERR_STRING = 	('An invalid file or URL was provided for the %s.\n')
+NO_SCHEME_STRING = 	('An invalid file or URL was provided for the %s. '
+					'If a URL, please make sure the URL contains a scheme! '
+					'("http://" or "https://")\n')
 
 
 def get_JSON(jsonobject):
 	"""
 	get_JSON() attempts to load a reference to a JSON object and then return
 	it as a json object. It will try to load as a local file, and then a URL,
-	in that order. If both fail, then it raises a ValueError exception.
+	in that order.
 
 	Args:
 		jsonobject: Reference to a json file or URL.
@@ -34,51 +41,44 @@ def get_JSON(jsonobject):
 
 	Raises:
 		ValueError: If jsonobject fails to load as a file or URL. 
-
+		HTTPError: If a URL returned an HTTP status error code
 	"""
+	jsonfile = None # Var to keep track of the string json to be loaded
+
 	try:
 		# Attempt to load jsonobject as a local file
-		return json.load(open(os.path.abspath(jsonobject)))
-	except:
-		# attempt to load jsonobject as a URL
-		with has_internet(jsonobject) as url:
-			try:
-				return json.loads(url.read().decode())
-			except:
-				# Either a bad file or URL, raise ValuError exception
-				 raise ValueError("An invalid json file or URL was provided")
+		with open(os.path.abspath(jsonobject)) as file:
+				jsonfile = file.read()
 
+	# FileNotFound error occurs if bad file (or URL) is passed in
+	except FileNotFoundError:
+		try:
+			jsonfile = urlopen(jsonobject, timeout=5).read().decode()
+		# THIS  MUST COME BEFORE URLERROR
+		except HTTPError:
+			raise HTTPError(HTTP_ERR_STRING)
+		# Raises URLError if a malformed or bad URL is passed in
+		except URLError:
+			raise ValueError(VAL_ERR_STRING)
+		except ValueError as e:
+			# No scheme has a separate error message
+			if not urlparse(jsonobject).scheme:
+				raise ValueError(NO_SCHEME_STRING)
+			else:
+				raise ValueError(VAL_ERR_STRING)
 
-
-def has_internet(url):
-	"""
-	Verifies that the system this script is running on can access the provided
-	URL. If it fails, then we raise an error.
-
-	Args:
-		url: The URL to check if a connection can be established with.
-		jsontype: Either cart.json or base-prices.json
-
-	Returns: A urlopen() object, to be read in validate_HTTP_JSON()
-
-	Raises:
-		ValueError: If provided URL is invalid. This may also be a bad file.
-	"""
-
-	# Add scheme to url if it is missing one
-	if not urlparse(url).scheme:
-		url = "http://" + url
-
+	# File/URL successfully obtained, attempt to load it as a JSON object
 	try:
-		return urlopen(url, timeout=5)
-	except:
-		raise ValueError("An invalid json file or URL was provided")
+		return json.loads(jsonfile)
+	# File/URL was NOT a json-formatted file, throw error and exit.
+	except ValueError:
+		raise ValueError(VAL_ERR_STRING)
 
 
-
-# Define get_JSON to be entry point if this file is used sstandalone
+# Define get_JSON to be entry point if this file is used standalone
 if __name__ == "__main__":
 	try:
-		print(get_JSON('YOUR QUERY HERE'))
-	except ValueError:
-		print("Caught!")
+		get_JSON('YOUR DIRECTIVE HERE')
+	except Exception as e:
+		print(str(e) % 'cart')
+		

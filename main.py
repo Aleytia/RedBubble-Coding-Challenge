@@ -9,19 +9,6 @@ from src import calculate_price as CALC
 from src import get_json as GJ
 
 
-
-def get_JSON_path(jsonfile):
-	"""
-	Helper function to get the absolute path of a file
-	"""
-	#return os.path.abspath(jsonfile)
-	try:
-		return GJ.get_JSON(jsonfile)
-	except:
-		return "Caught!"
-
-
-
 def parse_args():
 	"""
 	Standard ArgumentParser module to accept command-line arguments 
@@ -48,9 +35,32 @@ def parse_args():
 def main():
 	args = parse_args() # Get command line args
 
+	# Get cart into a JSON object
+	try:
+		cartjson = GJ.get_JSON(args.cart)
+	except Exception as e:
+		# If an exception is thrown, let's also check prices so the user will
+		# know if only the cart or both cart and prices are malformed
+		try:
+			GJ.get_JSON(args.base_prices)
+		except Exception as e:
+			print()
+			print(str(e) % 'cart')
+			sys.exit(str(e) % 'base prices')
+
+		print()
+		sys.exit(str(e) % 'cart')
+
+	# Get base-prices into a JSON object
+	try:
+		pricejson = GJ.get_JSON(args.base_prices)
+	except Exception as e:
+		print()
+		sys.exit(str(e) % 'base prices')
+
 
 
 
 # Define main() as our entrypoint
 if __name__ == "__main__":
-	#main()
+	main()
