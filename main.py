@@ -7,6 +7,7 @@ from argparse import ArgumentParser
 # Self-defined imports
 from src import calculate_price as CALC 
 from src import get_json as GJ
+from src import build_price_dict as BPD
 
 
 def parse_args():
@@ -30,11 +31,14 @@ def parse_args():
 	return parser.parse_args()
 
 
-# TODO!
 # Usage: calculate [flags] cart.json base-prices.json
 def main():
+
+	# 1: Parse command-line arguments
 	args = parse_args() # Get command line args
 
+
+	# 2: Get JSOn files/urls into JSON objects
 	# Get cart into a JSON object
 	try:
 		cartjson = GJ.get_JSON(args.cart)
@@ -57,6 +61,16 @@ def main():
 	except Exception as e:
 		print()
 		sys.exit(str(e) % 'base prices')
+
+
+
+	# This section does not need try/except, we need not test for conformity
+	try:
+		pricedict = BPD.PriceDict()
+		pricedict.add_base_price(pricejson)
+	except Exception as e:
+		sys.exit("An error has occured while parsing the base-prices.")
+	
 
 
 

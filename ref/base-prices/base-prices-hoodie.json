@@ -38,46 +38,5 @@
       "size": ["xl", "2xl", "3xl"]
     },
     "base-price": 4368
-  },
-  {
-    "product-type": "sticker",
-    "options": {
-      "size": ["small"]
-    },
-    "base-price": 221
-  },
-  {
-    "product-type": "sticker",
-    "options": {
-      "size": ["medium"]
-    },
-    "base-price": 583
-  },
-  {
-    "product-type": "sticker",
-    "options": {
-      "size": ["large"]
-    },
-    "base-price": 1000
-  },
-  {
-    "product-type": "sticker",
-    "options": {
-      "size": ["xl"]
-    },
-    "base-price": 1417
-  },
-  {
-    "product-type": "leggings",
-    "options": {
-    },
-    "base-price": 5000
-  },
-  {
-    "product-type": "cases",
-    "options": {
-      "colour": ["green"]
-    },
-    "base-price": 1000
   }
 ]
