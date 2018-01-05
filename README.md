@@ -39,10 +39,10 @@ Note that *filename* should **NOT** contain the .py extension.
 
 ------
 
-- *The main executable for this file can be found at the root level as `main.py`.  
+- The main executable for this file can be found at the root level as `main.py`.  
 - All other modules used can be found in `/src`.  
 - Example JSON cart and base-price files can be found in `/ref`.  Notes on sp
-- ecific submodules can be found in `/doc`. 
+- Specific submodules can be found in `/doc`. 
 - Unit tests can be found in `/test`. 
 
 ### **License**

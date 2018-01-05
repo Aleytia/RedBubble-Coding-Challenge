@@ -98,13 +98,13 @@ class ProductInfo:
 		return option_tuple
 
 
-	"""
+	# Provide a string representation of ProductInfo.
 	def __repr__(self):
 		return str(self.option_dict)
 
 	def __str__(self):
 		return str(self.option_dict)
-	"""
+	
 
 
 class PriceDict:
