@@ -239,3 +239,10 @@ class PriceDict:
 		Returns: The request option index, as an int.
 		"""
 		return self.lookup_dict[product].option_dict[option_category][option]
+
+
+# Make file executable as a standalone, or rather lack thereof.
+if __name__ == "__main__":
+	print("This file cannot run on its own without two valid JSON files.")
+	print("Please execute this file from main or import it as a module.")
+	sys.exit(0)

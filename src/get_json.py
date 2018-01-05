@@ -54,7 +54,7 @@ def get_JSON(jsonobject):
 	except FileNotFoundError:
 		try:
 			jsonfile = urlopen(jsonobject, timeout=5).read().decode()
-		# THIS  MUST COME BEFORE URLERROR
+		# THIS MUST COME BEFORE URLERROR
 		except HTTPError:
 			raise HTTPError(HTTP_ERR_STRING)
 		# Raises URLError if a malformed or bad URL is passed in
