@@ -53,4 +53,4 @@ This project is licensed under the MIT license.  A copy of the license may be fo
 
 ------
 
-reverie-lu | [github.com/reverie-lu](https://github.com/reverie-lu) 
+reverie-lu | [github.com/reverie-lu](https://github.com/reverie-lu) | This repository was made public after the deadline for the challenge.
